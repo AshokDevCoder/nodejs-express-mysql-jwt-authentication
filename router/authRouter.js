@@ -1,5 +1,12 @@
 const router = require("express").Router();
-const { home, register, login } = require("../controller/authController");
+const {
+  home,
+  register,
+  login,
+  logout,
+  requireLogin,
+  userDashboard,
+} = require("../controller/authController");
 //importing express validater middleware from authvalidator file
 const {
   userRegisterValidator,
@@ -14,5 +21,9 @@ router.get("/", home);
 router.post("/register", userRegisterValidator, runValidation, register);
 //api login route url: http://localhost:6001/api/login
 router.post("/login", userLoginValidator, runValidation, login);
+//logout
+router.get("/logout", logout);
+//protected router
+router.get("/dashboard", requireLogin, userDashboard);
 
 module.exports = router;

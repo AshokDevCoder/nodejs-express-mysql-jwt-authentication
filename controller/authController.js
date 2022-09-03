@@ -74,3 +74,31 @@ exports.login = (req, res) => {
     }
   );
 };
+
+//user logout
+exports.logout = (req, res) => {
+  res.clearCookie(process.env.JWT_COOKIE_NAME);
+  res.json({
+    message: "User logged out",
+  });
+};
+// secretRoute
+exports.userDashboard = (req, res) => {
+  const { rawHeaders, auth, body } = req;
+  const { id } = auth;
+  const { email } = body;
+  const token = rawHeaders[1];
+  res.json({
+    message: "user dashboard secret route",
+    token,
+    user: {
+      id,
+      email,
+    },
+  });
+};
+//checking login user have jwt token
+exports.requireLogin = expressjwt({
+  secret: process.env.JWT_SECRET,
+  algorithms: ["HS256"],
+});
